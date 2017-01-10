@@ -70,19 +70,46 @@ ASTEROIDS.View = {
     this.bgContext.fillStyle = "black";
     this.bgContext.fillRect(0,0, this.backgroundCanvas.width, this.backgroundCanvas.height);
   },
-  clearAsteroid(obj){
+  clearAsteroid: function clearAsteroid(obj){
     this.objsContext.clearRect(obj.x - obj.width - (obj.vx + 1),
                                obj.y - obj.width -(obj.vy + 1),
                                obj.width*2 + 2, obj.width*2 + 2);
-  }
+  },
   renderAsteroids: function renderObjects(objects){
     this.objsContext.strokeStyle = "white";
-    this.objsContext.beginPath();
     for(var i = 0; i < objects.length; i++){
-
-      this.objsContext.arc(objects[i].x, objects[i].y, objects[i].width, 0, Math.PI*2);
+      this.clearAsteroid(objects[i])
     }
-    this.objsContext.stroke();
+    for(var i = 0; i < objects.length; i++){
+      this.objsContext.beginPath();
+      this.objsContext.arc(objects[i].x, objects[i].y, objects[i].width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // if(objects[i].x + objects[i].width >= this.width && objects[i].y + objects[i].width >= this.height){
+      //   this.objsContext.beginPath();
+      //   this.objsContext.arc(objects[i].x-this.width, objects[i].y-this.height, objects[i].width, 0, Math.PI*2);
+      //   this.objsContext.stroke();
+      // } else if(objects[i].x - objects[i].width <= 0 && objects[i].y - objects[i].width <= 0){
+      //   this.objsContext.beginPath();
+      //   this.objsContext.arc(objects[i].x+this.width, objects[i].y+this.height, objects[i].width, 0, Math.PI*2);
+      //   this.objsContext.stroke();
+      // } else if(objects[i].x + objects[i].width >= this.width){
+      //   this.objsContext.beginPath();
+      //   this.objsContext.arc(objects[i].x-this.width, objects[i].y, objects[i].width, 0, Math.PI*2);
+      //   this.objsContext.stroke();
+      // } else if(objects[i].x - objects[i].width <= 0) {
+      //   this.objsContext.beginPath();
+      //   this.objsContext.arc(objects[i].x+this.width, objects[i].y, objects[i].width, 0, Math.PI*2);
+      //   this.objsContext.stroke();
+      // } else if(objects[i].y + objects[i].width >= this.height) {
+      //   this.objsContext.beginPath();
+      //   this.objsContext.arc(objects[i].x, objects[i].y-this.height, objects[i].width, 0, Math.PI*2);
+      //   this.objsContext.stroke();
+      // } else if(objects[i].y - objects[i].width <= 0) {
+      //   this.objsContext.beginPath();
+      //   this.objsContext.arc(objects[i].x, objects[i].y+this.height, objects[i].width, 0, Math.PI*2);
+      //   this.objsContext.stroke();
+      // }
+    }
   },
   renderSpaceship: function renderSpaceship(){
 

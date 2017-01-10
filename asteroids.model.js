@@ -6,6 +6,9 @@ ASTEROIDS.Model = {
     this.height = options.width || window.innerWidth;
     this.width = options.height || window.innerHeight;
     this.asteroids = [new this.Asteroid()];
+    for(var i=0; i < 15; i++){
+      this.asteroids.push( new this.Asteroid())
+    }
   },
   newSize: function newSize(w, h){
     this.height = w;
@@ -22,7 +25,7 @@ ASTEROIDS.Model = {
     var coords = {}
     return {
       top: function offTop(point){
-        
+
       },
       bottom: function offBottom(point){
 
