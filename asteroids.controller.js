@@ -4,7 +4,7 @@ ASTEROIDS.Controller = {
     this.model = ASTEROIDS.Model;
     this.view = ASTEROIDS.View;
     this.model.init();
-    this.view.init({resize: ASTEROIDS.Controller.resize});
+    this.view.init({resize: ASTEROIDS.Controller.resize, keyDown: ASTEROIDS.Model.startKey, keyUp: ASTEROIDS.Model.stopKey,});
     this.animationSpeed();
     this.animate()
   },
@@ -19,5 +19,8 @@ ASTEROIDS.Controller = {
     requestAnimationFrame(function(){ASTEROIDS.Controller.animate()});
     this.model.moveAsteroids();
     this.view.renderAsteroids(this.model.asteroids);
+    this.model.moveShip();
+    this.model.ship.setVertices();
+    this.view.renderShip(this.model.ship);
   }
 }

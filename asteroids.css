@@ -10,14 +10,21 @@ body, html, asteroids {
 asteroids {
   position: relative;
 }
-asteroids .asteroids-background {
-  z-index: 0;
-}
-asteroids .asteroids-objects {
-  z-index: 11;
-}
-asteroids .asteroids-background, asteroids .asteroids-objects {
+
+asteroids .asteroids-background, asteroids .asteroids-objects, asteroids .asteroids-spaceship {
   position: absolute;
   left: 0;
   right: 0;
+}
+
+asteroids .asteroids-background {
+  z-index: 0;
+}
+
+asteroids .asteroids-objects {
+  z-index: 10;
+}
+
+asteroids .asteroids-spaceship {
+  z-index: 20;
 }
