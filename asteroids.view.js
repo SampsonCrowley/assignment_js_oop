@@ -36,7 +36,7 @@ ASTEROIDS.View = {
     window.addEventListener('resize', function() {
       _this.resize();
       if(cb.resize){
-        cb.resize(this.width, this.height);
+        cb.resize(_this.width, _this.height);
       }
     });
   },
@@ -72,43 +72,73 @@ ASTEROIDS.View = {
   },
   clearAsteroid: function clearAsteroid(obj){
     this.objsContext.clearRect(obj.x - obj.width - (obj.vx + 1),
-                               obj.y - obj.width -(obj.vy + 1),
-                               obj.width*2 + 2, obj.width*2 + 2);
+    obj.y - obj.width -(obj.vy + 1),
+    obj.width*2 + 2, obj.width*2 + 2);
   },
   renderAsteroids: function renderObjects(objects){
     this.objsContext.strokeStyle = "white";
-    for(var i = 0; i < objects.length; i++){
-      this.clearAsteroid(objects[i])
-    }
+    // for(var i = 0; i < objects.length; i++){
+    //   this.clearAsteroid(objects[i])
+    // }
+
+    this.objsContext.clearRect(0,0, this.width, this.height);
+
     for(var i = 0; i < objects.length; i++){
       this.objsContext.beginPath();
       this.objsContext.arc(objects[i].x, objects[i].y, objects[i].width, 0, Math.PI*2);
       this.objsContext.stroke();
-      // if(objects[i].x + objects[i].width >= this.width && objects[i].y + objects[i].width >= this.height){
-      //   this.objsContext.beginPath();
-      //   this.objsContext.arc(objects[i].x-this.width, objects[i].y-this.height, objects[i].width, 0, Math.PI*2);
-      //   this.objsContext.stroke();
-      // } else if(objects[i].x - objects[i].width <= 0 && objects[i].y - objects[i].width <= 0){
-      //   this.objsContext.beginPath();
-      //   this.objsContext.arc(objects[i].x+this.width, objects[i].y+this.height, objects[i].width, 0, Math.PI*2);
-      //   this.objsContext.stroke();
-      // } else if(objects[i].x + objects[i].width >= this.width){
-      //   this.objsContext.beginPath();
-      //   this.objsContext.arc(objects[i].x-this.width, objects[i].y, objects[i].width, 0, Math.PI*2);
-      //   this.objsContext.stroke();
-      // } else if(objects[i].x - objects[i].width <= 0) {
-      //   this.objsContext.beginPath();
-      //   this.objsContext.arc(objects[i].x+this.width, objects[i].y, objects[i].width, 0, Math.PI*2);
-      //   this.objsContext.stroke();
-      // } else if(objects[i].y + objects[i].width >= this.height) {
-      //   this.objsContext.beginPath();
-      //   this.objsContext.arc(objects[i].x, objects[i].y-this.height, objects[i].width, 0, Math.PI*2);
-      //   this.objsContext.stroke();
-      // } else if(objects[i].y - objects[i].width <= 0) {
-      //   this.objsContext.beginPath();
-      //   this.objsContext.arc(objects[i].x, objects[i].y+this.height, objects[i].width, 0, Math.PI*2);
-      //   this.objsContext.stroke();
-      // }
+      this.screenWrap(objects[i]);
+    }
+  },
+  screenWrap: function screenWrap(obj){
+    // Bottom right corner
+    if(obj.x + obj.width >= this.width && obj.y + obj.width >= this.height){
+      console.log("off the bottom right");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x-this.width, obj.y-this.height, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // Top right Corner
+    } else if(obj.x + obj.width >= this.width && obj.y - obj.width <= 0){
+      console.log("off the top right");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x-this.width, obj.y+this.height, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // Top Left Corner
+    } else if(obj.x - obj.width <= 0 && obj.y - obj.width <= 0){
+      console.log("off the top left");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x+this.width, obj.y+this.height, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // Bottom Left Corner
+    } else if(obj.x - obj.width <= 0 && obj.y + obj.width >= this.height){
+      console.log("off the bottom left");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x+this.width, obj.y-this.height, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // Right Side
+    } else if(obj.x + obj.width >= this.width){
+      console.log("off the right");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x-this.width, obj.y, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // Left Side
+    } else if(obj.x - obj.width <= 0) {
+      console.log("off the left side");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x+this.width, obj.y, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // Bottom Side
+    } else if(obj.y + obj.width >= this.height) {
+      console.log("off the bottom");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x, obj.y-this.height, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
+      // Top Side
+    } else if(obj.y - obj.width <= 0) {
+      console.log("off the top");
+      this.objsContext.beginPath();
+      this.objsContext.arc(obj.x, obj.y+this.height, obj.width, 0, Math.PI*2);
+      this.objsContext.stroke();
     }
   },
   renderSpaceship: function renderSpaceship(){
