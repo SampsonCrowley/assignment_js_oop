@@ -1,6 +1,8 @@
 ASTEROIDS = ASTEROIDS || {}
 ASTEROIDS.Model = {
   init: function init(options) {
+    options = options || {};
+
     this.height = options.width || window.innerWidth;
     this.width = options.height || window.innerHeight;
   }
@@ -8,6 +10,7 @@ ASTEROIDS.Model = {
 var _AM = ASTEROIDS.Model
 
 _AM.Moveable = function Moveable(coords) {
+  coords = coords || {};
   this.x = coords.x || _AM.height/2;
   this.y = coords.y || _AM.width/2;
   this.vx = coords.vx || 0;
@@ -17,9 +20,13 @@ _AM.Moveable = function Moveable(coords) {
 _AM.Moveable.prototype.tic = function(){
   this.x += this.vx;
   this.y += this.vy;
+
+  return this.x + ", " + this.y;
 }
 
 _AM.Asteroid = function Asteroid(coords){
+  coords = coords || {};
+
   coords.x = coords.x || Math.random() * ASTEROIDS.Model.width;
   coords.y = coords.y || Math.random() * ASTEROIDS.Model.height;
   coords.vx = coords.vx || Math.random() * 3;
