@@ -11,13 +11,11 @@ ASTEROIDS.View = {
     this.gameWrapper = document.getElementsByTagName('asteroids')[0] || this.createWrapper();
     this.backgroundCanvas = this.gameWrapper.getElementsByClassName('asteroids-background')[0] || this.createCanvas('asteroids-background');
     this.asteroidCanvas = this.gameWrapper.getElementsByClassName('asteroids-objects')[0] || this.createCanvas('asteroids-objects');
-    this.spaceshipCanvas = this.gameWrapper.getElementsByClassName('asteroids-spaceship')[0] || this.createCanvas('asteroids-spaceship');
   },
   initCanvas: function initCanvas() {
     this.bgContext = this.backgroundCanvas.getContext('2d');
     this.bgContext.fillStyle = "black";
     this.astrdContext = this.asteroidCanvas.getContext('2d');
-    this.shipContext = this.spaceshipCanvas.getContext('2d');
     this.resize();
   },
   listeners: function listeners(cb){
@@ -28,11 +26,17 @@ ASTEROIDS.View = {
       document.body.addEventListener("keydown", function(e) {
         cb.keyDown(e.which || e.keyCode || 0)
       });
+      document.body.addEventListener("mousedown", function(e) {
+        cb.keyDown("click")
+      });
     }
 
     if(cb.keyUp){
       document.body.addEventListener("keyup", function(e) {
         cb.keyUp(e.which || e.keyCode || 0)
+      });
+      document.body.addEventListener("mouseup", function(e) {
+        cb.keyUp("click")
       });
     }
 
@@ -50,8 +54,6 @@ ASTEROIDS.View = {
     this.backgroundCanvas.width = this.width;
     this.asteroidCanvas.height = this.height;
     this.asteroidCanvas.width = this.width;
-    this.spaceshipCanvas.height = this.height;
-    this.spaceshipCanvas.width = this.width;
 
     this.renderBackground();
   },
@@ -75,81 +77,71 @@ ASTEROIDS.View = {
     this.bgContext.clearRect(0,0, this.width, this.height);
     this.bgContext.fillRect(0,0, this.backgroundCanvas.width, this.backgroundCanvas.height);
   },
-  renderAsteroids: function renderObjects(objects){
+  clearEntities: function clearEntities(){
     this.astrdContext.strokeStyle = "white";
     this.astrdContext.clearRect(0,0, this.width, this.height);
-
+  },
+  renderEntities: function renderEntities(objects){
+    this.clearEntities();
+    this.renderCircles(objects.circles);
+    this.renderPolygons(objects.polygons);
+  },
+  renderCircles: function renderObjects(objects){
+    var _this = this;
     for(var i = 0; i < objects.length; i++){
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(objects[i].x, objects[i].y, objects[i].radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      this.screenWrap(objects[i]);
+      this.drawCircle(objects[i])
+      this.screenWrap(objects[i], function(addX, addY){
+        _this.drawCircle(objects[i], addX, addY);
+      });
     }
   },
-  renderShip: function renderShip(ship){
-    this.shipContext.strokeStyle = "white";
-    this.shipContext.clearRect(0,0, this.width, this.height);
-    this.shipContext.beginPath();
-    this.shipContext.moveTo(ship.vertices[0][0], ship.vertices[0][1]);
-    for(var i = 1; i < ship.vertices.length; i++){
-      this.shipContext.lineTo(ship.vertices[i][0], ship.vertices[i][1]);
-    }
-    this.shipContext.closePath();
-    this.shipContext.stroke()
+  drawCircle: function renderObjects(object, addX, addY){
+    addX = addX || 0, addY = addY || 0;
+    this.astrdContext.beginPath();
+    this.astrdContext.arc(object.x + addX, object.y + addY, object.radius, 0, Math.PI*2);
+    this.astrdContext.stroke();
+
   },
-  screenWrap: function screenWrap(obj){
-    // Bottom right corner
-    if(obj.x + obj.radius >= this.width && obj.y + obj.radius >= this.height){
-      // console.log("off the bottom right");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x-this.width, obj.y-this.height, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      // Top right Corner
-    } else if(obj.x + obj.radius >= this.width && obj.y - obj.radius <= 0){
-      // console.log("off the top right");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x-this.width, obj.y+this.height, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      // Top Left Corner
-    } else if(obj.x - obj.radius <= 0 && obj.y - obj.radius <= 0){
-      // console.log("off the top left");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x+this.width, obj.y+this.height, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      // Bottom Left Corner
-    } else if(obj.x - obj.radius <= 0 && obj.y + obj.radius >= this.height){
-      // console.log("off the bottom left");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x+this.width, obj.y-this.height, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      // Right Side
-    } else if(obj.x + obj.radius >= this.width){
-      // console.log("off the right");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x-this.width, obj.y, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      // Left Side
-    } else if(obj.x - obj.radius <= 0) {
-      // console.log("off the left side");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x+this.width, obj.y, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      // Bottom Side
-    } else if(obj.y + obj.radius >= this.height) {
-      // console.log("off the bottom");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x, obj.y-this.height, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
-      // Top Side
-    } else if(obj.y - obj.radius <= 0) {
-      // console.log("off the top");
-      this.astrdContext.beginPath();
-      this.astrdContext.arc(obj.x, obj.y+this.height, obj.radius, 0, Math.PI*2);
-      this.astrdContext.stroke();
+  renderPolygons: function renderPolygon(polygons){
+    var _this = this;
+    for(var i = 0; i < polygons.length; i++){
+      this.drawPolygon(polygons[i])
+      this.screenWrap(polygons[i], function(addX, addY){
+        _this.drawPolygon(polygons[i], addX, addY)
+      });
+    }
+  },
+  drawPolygon: function drawPolygon(polygon, addX, addY) {
+    addX = addX || 0, addY = addY || 0;
+
+    this.astrdContext.beginPath();
+    this.astrdContext.moveTo(polygon.vertices[0][0] + addX, polygon.vertices[0][1] + addY);
+    for(var i = 1; i < polygon.vertices.length; i++){
+      this.astrdContext.lineTo(polygon.vertices[i][0] + addX, polygon.vertices[i][1] + addY);
+    }
+    this.astrdContext.closePath();
+    this.astrdContext.stroke()
+  },
+  screenWrap: function screenWrap(obj, cb){
+    var addX = 0, addY = 0;
+    if(obj.x + obj.radius >= this.width){
+      addX = -this.width;
+    } else if(obj.x - obj.radius <= 0){
+      addX = this.width;
+    }
+    if(obj.y + obj.radius >= this.height){
+      addY = -this.height;
+    } else if(obj.y - obj.radius <= 0){
+      addY = this.height;
+    }
+
+    if( addX || addY) {
+      cb(addX, addY);
     }
   },
   gameOver: function gameOver(){
-    this.shipContext.font="50vh Verdana";
-    this.shipContext.strokeText("Game Over", this.width/4, this.height*.75, this.width/2)
+    this.astrdContext.font="50vh Verdana";
+    this.astrdContext.fillStyle="white";
+    this.astrdContext.fillText("Game Over", this.width/4, this.height*.75, this.width/2)
   }
 }

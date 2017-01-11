@@ -1,3 +1,13 @@
-# assignment_js_oop
-Objectify! Construct! Prototype!  Win.
-[A JavaScript project using objects, constructors and prototypes from the Viking Code School](http://www.vikingcodeschool.com)
+# Asteroids!
+
+## controls:
+
+### W, Up: Accelerate
+
+### A, Left: Rotate Left
+
+### D, Right: Rotate Right
+
+### Space, Click: FIRE!!
+
+##[PLAY DEMO!](https://htmlpreview.github.io/?https://github.com/SampsonCrowley/asteroids/blob/master/index.html)

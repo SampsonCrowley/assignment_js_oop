@@ -21,12 +21,14 @@ ASTEROIDS.Controller = {
       return;
     }
     requestAnimationFrame(function(){ASTEROIDS.Controller.animate()});
-    this.model.moveAsteroids();
-    this.view.renderAsteroids(this.model.asteroids);
-    this.model.moveShip();
+
+    this.model.move();
     this.model.checkCollision();
-    this.model.ship.setVertices();
-    this.view.renderShip(this.model.ship);
+    this.view.renderEntities({
+      circles: this.model.asteroids,
+      polygons: [this.model.ship, ...this.model.bullets]
+    })
+    this.model.increaseLevel();
   },
   gameOver: function gameOver(){
     this.view.gameOver();
