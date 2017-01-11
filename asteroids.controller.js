@@ -23,7 +23,6 @@ ASTEROIDS.Controller = {
     requestAnimationFrame(function(){ASTEROIDS.Controller.animate()});
 
     this.model.move();
-    this.model.checkCollision();
     this.view.renderEntities({
       circles: this.model.asteroids,
       polygons: [this.model.ship, ...this.model.bullets]

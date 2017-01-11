@@ -3,6 +3,7 @@ ASTEROIDS.Model.move = function move(){
   this.moveAsteroids();
   this.moveShip();
   this.moveBullets();
+  this.checkCollision();
 }
 
 ASTEROIDS.Model.screenWrap = function screenWrap(obj){
