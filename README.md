@@ -10,4 +10,10 @@
 
 ### Space, Click: FIRE!!
 
-##[PLAY DEMO!](https://htmlpreview.github.io/?https://github.com/SampsonCrowley/asteroids/blob/master/index.html)
+## [PLAY DEMO!](https://htmlpreview.github.io/?https://github.com/SampsonCrowley/asteroids/blob/master/index.html)
+
+
+## Contributors
+
+### [Sampson Crowley](https://github.com/SampsonCrowley)
+### [Jessica Gillan](git@github.com:JessicaGillan)
