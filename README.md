@@ -1,4 +1,4 @@
-# Asteroids!
+Asteroids!
 =================
 ## controls:
 
