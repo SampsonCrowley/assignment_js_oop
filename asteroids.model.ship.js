@@ -2,7 +2,6 @@ ASTEROIDS = ASTEROIDS || {}
 ASTEROIDS.Model = ASTEROIDS.Model || {}
 
 ASTEROIDS.Model.moveShip = function moveShip(){
-  console.log(this.keys)
   if (this.keys[38] || this.keys[87]) {
     // up arrow
     this.ship.vx += this.ship.dx(this.ship.direction, 0.05)
