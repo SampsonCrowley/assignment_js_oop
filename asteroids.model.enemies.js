@@ -45,7 +45,7 @@ ASTEROIDS.Model.Asteroid = function Asteroid(coords){
     if(this.radius == 10){
       return false
     } else {
-      if(this.radius % 2 < 10){
+      if(this.radius < 20){
         this.radius = 10;
       } else {
         this.radius /= 2
