@@ -62,8 +62,7 @@ ASTEROIDS.Model = {
       py *= dp
     }
 
-    if (!nearest)
-    nearest = []
+    var nearest = []
     nearest[0] = x1 + px
     nearest[1] = y1 + py
 
@@ -84,6 +83,7 @@ ASTEROIDS.Model = {
       for(var n = 0; n < lines.length; n++){
         if(this.lineCircleCollide(lines[n], [this.asteroids[i].x, this.asteroids[i].y], this.asteroids[i].radius)){
           console.log("collide!");
+          this.gameOver = true;
           return true;
         }
       }
