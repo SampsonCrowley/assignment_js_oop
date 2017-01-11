@@ -10,6 +10,14 @@ ASTEROIDS.Controller = {
   },
   resize: function(w, h){
     ASTEROIDS.Model.newSize(w, h);
+    ASTEROIDS.View.renderEntities({
+      circles: ASTEROIDS.Model.asteroids,
+      polygons: [ASTEROIDS.Model.ship, ...ASTEROIDS.Model.bullets]
+    })
+    if(ASTEROIDS.Model.gameOver){
+      ASTEROIDS.Controller.gameOver();
+      return;
+    }
   },
   animationSpeed: function animationSpeed(){
     var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
