@@ -96,8 +96,6 @@ ASTEROIDS.View = {
     }
     this.shipContext.closePath();
     this.shipContext.stroke()
-
-    this.screenWrap(ship);
   },
   screenWrap: function screenWrap(obj){
     // Bottom right corner

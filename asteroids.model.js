@@ -1,3 +1,4 @@
+
 ASTEROIDS = ASTEROIDS || {}
 ASTEROIDS.Model = {
   init: function init(options) {
@@ -18,6 +19,18 @@ ASTEROIDS.Model = {
     for(var i=0; i < num; i++){
       this.addAsteroid();
     }
+  },
+  checkCollision: function checkCollision() {
+    var ship = new SAT.Polygon(new SAT.Vector(this.ship.vertices[0][0], this.ship.vertices[0][1]),
+                               [new SAT.Vector(this.ship.vertices[0][0], this.ship.vertices[0][1]),
+                                new SAT.Vector(this.ship.vertices[1][0], this.ship.vertices[1][1]]),
+                                new SAT.Vector(this.ship.vertices[3][0], this.ship.vertices[3][1])] )
+    var circles;
+    for (var i = 0; i < this.asteroids.length; i++){
+      circles.push( new SAT.circle(new SAT.Vector(this.asteroids[i].x, this.asteroids[i].y, this.asteroids[i].radius)) );
+    }
+
+    // SAT.testPolygonCircle( ship, circle);
   },
   addAsteroid: function addAsteroid(options){
     this.asteroids.push( new this.Asteroid(options));
@@ -43,8 +56,8 @@ ASTEROIDS.Model = {
   moveShip: function moveShip(){
     if (this.keys[38]) {
       // up arrow
-      this.ship.vx += this.ship.dx(this.ship.direction)
-      this.ship.vy += this.ship.dy(this.ship.direction)
+      this.ship.vx += this.ship.dx(this.ship.direction, 0.05)
+      this.ship.vy += this.ship.dy(this.ship.direction, 0.05)
     }
     if (this.keys[39]) {
       // right arrow
